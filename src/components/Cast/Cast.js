@@ -14,21 +14,21 @@ const Cast = () => {
     onGettingMoveDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
   const onGettingMoveDetails = async () => {
     try {
       const response = await getMovieCast(movieId);
       const resp = await response;
       setDetails(resp.data.cast);
-      setTimeout(() => {
-        if (Object.keys(cast).length === 0) {
-          setIsLoadedCast(true);
-        }
-      }, 500);
+  
+      if (resp.data.cast.length === 0) {
+        setIsLoadedCast(true);
+      }
     } catch (e) {
       console.log(e);
     }
   };
-
+  
   return (
     <div>
       {!isLoadedCast && <Loader />}
