@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-
 import { Container, Form, Input, ButtonStyled } from "./SearchMovie.styled";
 import { BsSearch } from "react-icons/bs";
 import Notiflix from "notiflix";
 
 const SearchMovie = ({ onSubmit }) => {
   const oldQuery = useRef(null);
-
   const [queryParam, setQueryParam] = useState("");
 
   const handleOnChange = (e) => {
@@ -18,6 +16,7 @@ const SearchMovie = ({ onSubmit }) => {
   const reset = () => {
     setQueryParam("");
   };
+
   useEffect(() => {
     setQueryParam(queryParam);
   }, [queryParam]);
@@ -25,8 +24,7 @@ const SearchMovie = ({ onSubmit }) => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     if (queryParam.trim().length === 0) {
-      setQueryParam(queryParam);
-      return Notiflix.Notify.failure("Please type in some search key word");
+      return Notiflix.Notify.failure("Please type in some search keywords");
     }
 
     if (
@@ -34,14 +32,12 @@ const SearchMovie = ({ onSubmit }) => {
       oldQuery.current.toLowerCase().trim() === queryParam.toLowerCase().trim()
     ) {
       reset();
-
       return Notiflix.Notify.failure(
-        "This is the same movie that you have already entered. Please type new one for new results."
+        "Please enter a different movie name for new results."
       );
     }
     oldQuery.current = queryParam.trim();
     onSubmit(queryParam);
-
     reset();
   };
 
@@ -54,7 +50,7 @@ const SearchMovie = ({ onSubmit }) => {
         <Input
           type="text"
           name="queryParam"
-          autocomplete="off"
+          autoComplete="off"
           value={queryParam}
           onChange={handleOnChange}
           autoFocus
@@ -65,8 +61,8 @@ const SearchMovie = ({ onSubmit }) => {
   );
 };
 
-export default SearchMovie;
-
 SearchMovie.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
+
+export default SearchMovie;
